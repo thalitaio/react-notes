@@ -46,8 +46,6 @@ const App = () => {
   //End Notes
 
   //To do
-
-  const initialState = localStorage.getItem("todos") || [];
   const [input, setInput] = useState("");
   const [editTodo, setEditTodo] = useState(null);
   const [todos, setTodos] = useState([]);
