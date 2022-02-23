@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { nanoid } from 'nanoid';
 import NotesList from "./components/NotesList";
 import Search from "./components/Search";
 import Header from "./components/Header";
+//To do Imports
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+
 
 const App = () => {
-  const [notes, setNotes] = useState([
-    
-  ]);
 
+  //Start Notes
+  const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [darkMode, setDarkMode] = useState(false);
 
@@ -40,13 +43,55 @@ const App = () => {
     setNotes(newNotes);
   };
 
+  //End Notes
+
+  //To do
+
+  const initialState = localStorage.getItem("todos") || [];
+  const [input, setInput] = useState("");
+  const [editTodo, setEditTodo] = useState(null);
+  const [todos, setTodos] = useState([]);
+
+
+  useEffect(() => {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+
+    if (savedTodos) {
+      setTodos(savedTodos)
+    };
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
+
+  //End To Do
+
   return(
     <div className={`${darkMode && 'dark-mode'}`} >
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode} />
         <Search handleSearchNote={setSearchText} />
         <NotesList notes={notes.filter((note) => note.text.toLowerCase().includes(searchText) )} handleAddNote={addNote} handleDeleteNote={deleteNote} />
+        <TodoForm 
+          input = {input}
+          setInput = {setInput}
+          todos = {todos}
+          setTodos = {setTodos}
+          editTodo = {editTodo}
+          setEditTodo = {setEditTodo}
+        />
+        <TodoList 
+          className="container" 
+          todos={todos} 
+          setTodos={setTodos} 
+          setEditTodo={setEditTodo} 
+        />
       </div>
+      
+       
+      
+      
     </div>
   );
 };
